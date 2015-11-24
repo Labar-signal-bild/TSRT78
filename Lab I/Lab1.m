@@ -66,7 +66,7 @@ distance = 1-placement; % The distance from the unit circle to the pole
 
 % One of them should be a bode plot. Which one?? Both?
 
-spect_val = etfe(x, 100); % The non-parametric method
+spect_val = etfe(x, 100, [], 1/8000); % The non-parametric method
 
 figure(1); bode(mo, 'r', spect_val, 'b');
 legend('AR-model', 'Original Signal');
@@ -235,7 +235,7 @@ t = (0:nSamp-1)/fSamp; % time vector in seconds
 %sound(10*sent,8000);
 
 %% 
-order = 8
+order = 8;
 sent_div=zeros(200,160);
 for i=1:200
    sent_div(i,:)=sent(160*(i-1)+1:160*(i));
@@ -254,7 +254,7 @@ yhat = zeros(200,160);
 
 for i=1:200
     e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); % m1 <-> AR model of the segment
-    r = covf(e',100);
+    r = covf(e_vec',100);
     [A,D] = max(r(20:end));
     D = D+20;
     ehat = zeros(1,160);
@@ -271,13 +271,13 @@ y=y./(mean(abs(y)));
 
 figure(4); plot(y);
 mean(abs(y))
-sound(y,8000)
+%sound(y,8000)
 %%
 Y = fft(y);
 
-saturated = find(abs(Y) > 4000);
+%saturated = find(abs(Y) > 4000);
 
-Y(saturated) = Y(saturated)./10;
+%Y(saturated) = Y(saturated)./10;
 
 y_new = ifft(Y);
 
