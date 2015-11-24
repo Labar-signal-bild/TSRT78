@@ -22,11 +22,16 @@ Xsamp = length(X);
 % 1: Energy time domain 
 Etot1 = sum(abs(x).^2); % Definition of the energy in the time domain
 
+[B,A] = butter(5,[(1892-30)/8000 (1892+30)/8000]);
 
+x_t = filter(B,A,x);
 
-%domsamplestime = ifft(domsamples);
+Edom1 = sum(abs(x_t).^2);
 
-%Edom1 = sum(abs(domsamplestime).^2);
+figure(10)
+plot(1:N,abs(fft(x_t)))
+figure(11)
+plot(1:N,abs(fft(x)))
 
 
 
