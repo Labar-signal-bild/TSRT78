@@ -390,16 +390,3 @@ Sent = fft(sent);
 figure(6)
 plot(1:length(Sent),abs(Sent));
 
-
-
-%%
-figure(3)
-plot(1:32000,sent)
-
-
-%TODO: Are the poles stable?? If not, mirror then in the unit circle by the
-% help of poole_stable.m (make poole_stable.m)
-%TODO: detend! Maybe in the vowel part as well??
-
-
-
