@@ -1,11 +1,10 @@
 addpath Sound;
-
+fs=8000;
+B = 4000;
 %% 4.2 Wistle
 
-[whistle, fSamp] = audioread('whistle4.wav'); % extract data and sampling frequency
-%%
-x = whistle(8000*5+1:8000*7); % extract the two best seconds BETTER THEN 3-5????
-
+[whistle, fSamp] = audioread('whistle4.wav'); 
+x = whistle(8000*5+1:8000*7);
 %%
 nSamp = size(x,1); % number of samples
 t = (0:nSamp-1)/fSamp; % time vector in seconds
@@ -28,8 +27,7 @@ axis([-2000 2000 0 60])
 
 
 % 1: Energy time domain 
-Etot1 = sum(abs(x).^2); % Definition of the energy in the time domain
-
+Etot1 = sum(abs(x).^2);
 [B,A] = butter(5,[(1892-30)/8000 (1892+30)/8000]);
 
 x_t = filter(B,A,x);
@@ -42,12 +40,12 @@ Edom1 = sum(abs(x_t).^2);
 %plot(1:N,abs(fft(x)))
 
 
-
 % 2: Energy frequency domain
 X_lowMax = find(abs(X(1:Xsamp/2)) == max(abs(X(1:Xsamp/2))));
-X_highMax = find(abs(X(Xsamp/2+1:Xsamp)) == max(abs(X(Xsamp/2+1:Xsamp))))+Xsamp/2;
+X_highMax = find(abs(X(Xsamp/2+1:Xsamp)) == ...
+	    max(abs(X(Xsamp/2+1:Xsamp))))+Xsamp/2;
 
-band_pass = zeros(1, N); % Construct a band-pass filter to obtain the dominant frequences
+band_pass = zeros(1, N); 
 band_pass(X_lowMax-30:X_lowMax+30) = 1;
 band_pass(X_highMax-30:X_highMax+30) = 1;
 
@@ -69,9 +67,8 @@ mo = ar(x,2, [],[],[],1/8000); % AR model of order 2
 A = mo.a;
 [R,P,K] = residue(1,A); 
 
-placement = norm(P(1)); % The length from the origin to the pole
-distance = 1-placement; % The distance from the unit circle to the pole
-
+placement = norm(P(1)); 
+distance = 1-placement; 
 
 %% 5: Estimate the dominant frequancy paratertic/non-parametric
 
@@ -83,10 +80,10 @@ legend('AR-model', 'Original Signal');
 print(1,'bode1.eps','-depsc','-loose');
 
 %%
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
+%-----------------------------------------------------------------
+%-----------------------------------------------------------------
+%-----------------------------------------------------------------
+%-----------------------------------------------------------------
 
 %% Vowel
 %-------------------------------------------------------------------------------
@@ -95,10 +92,10 @@ print(1,'bode1.eps','-depsc','-loose');
 
 
 
-[aaa, fSamp] = audioread('A2.wav'); % extract data and sampling frequency
-%sound(aaa,fSamp); % make sure that the quality of the recording is okay
-nSamp = size(aaa,1); % number of samples
-t = (0:nSamp-1)/fSamp; % time vector in seconds
+[aaa, fSamp] = audioread('A2.wav'); 
+%sound(aaa,fSamp); 
+nSamp = size(aaa,1);
+t = (0:nSamp-1)/fSamp; 
 
 figure(1);clf();
 plot(t, aaa)
@@ -127,7 +124,7 @@ T= 1/8000;
 N=length(aa);
 
 edata = iddata(aa(1:2*floor(N/3)),[],T); % Estimated data
-vdata = iddata(aa(2*floor(N/3)+1:N),[],T); % Validation data, compare w this
+vdata = iddata(aa(2*floor(N/3)+1:N),[],T); % Validation data
 WNe=[];
 WNv=[];
 for n=1:20
@@ -223,7 +220,7 @@ T= 1/8000;
 N=length(ii);
 
 edata = iddata(ii(1:2*floor(N/3)),[],T); % Estimated data
-vdata = iddata(ii(2*floor(N/3)+1:N),[],T); % Validation data, compare w this
+vdata = iddata(ii(2*floor(N/3)+1:N),[],T); % Validation data
 WNe=[];
 WNv=[];
 for n=1:30
@@ -303,8 +300,8 @@ hold off
 
 %% Speech encoding as in GSM
 
-[sen, fSamp] = audioread('Sentance5.wav'); % extract data and sampling frequency
-%sound(aaa,fSamp); % make sure that the quality of the recording is okay
+[sen, fSamp] = audioread('Sentance5.wav'); % extract data
+%sound(aaa,fSamp); 
 nSamp = size(sen,1); % number of samples
 t = (0:nSamp-1)/fSamp; % time vector in seconds
 
@@ -330,7 +327,7 @@ end
 
 %%
     yhat = zeros(200,160);
-    e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); % m1 <-> AR model of the segment
+    e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); %
     r = covf(e_vec',100);
     figure(7)
     plot(r);title('Covaraince Function');xlabel('t');
@@ -341,7 +338,7 @@ fs = 8000;
 yhat = zeros(200,160);
 
 for i=1:200
-    e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); % m1 <-> AR model of the segment
+    e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); 
     r = covf(e_vec',100);
     [A,D] = max(r(20:end));
     D = D+20;
@@ -359,16 +356,20 @@ N = length(y);
 %%
 figure(4); 
 subplot(2,1,1)
-plot(0:1/(fs):(N-1)/fs,y);title('Parametric Sentence');xlabel('T');ylabel('Amplitude')
+plot(0:1/(fs):(N-1)/fs,y);title('Parametric Sentence');xlabel('T');
+ylabel('Amplitude')
 subplot(2,1,2)
-plot(0:1/fs:(N-1)/fs,sent);title('Non Parametric Sentence');xlabel('T');ylabel('Amplitude')
+plot(0:1/fs:(N-1)/fs,sent);title('Non Parametric Sentence');xlabel('T');
+ylabel('Amplitude')
 print(4,'sent_t.eps','-depsc','-loose');
 
 figure(5); 
 subplot(2,1,1);
-plot(-B:2*B/(N-1):B,abs(fft(y)));title('Parametric Sentence');xlabel('Hz');ylabel('Amplitude')
+plot(-B:2*B/(N-1):B,abs(fft(y)));title('Parametric Sentence');xlabel('Hz');
+ylabel('Amplitude')
 subplot(2,1,2)
-plot(-B:2*B/(N-1):B,abs(fft(sent)));title('Non Parametric Sentence');xlabel('Hz');ylabel('Amplitude')
+plot(-B:2*B/(N-1):B,abs(fft(sent)));title('Non Parametric Sentence');xlabel('Hz');
+ylabel('Amplitude')
 print(5,'sent_f.eps','-depsc','-loose');
 %sound(y,8000)
 %%
