@@ -70,9 +70,9 @@ A = mo.a;
 placement = norm(P(1)); 
 distance = 1-placement; 
 
-%% 5: Estimate the dominant frequancy paratertic/non-parametric
+%% 5: Estimate the dominant frequency
 
-spect_val = etfe(x, 100, [], 1/8000); % The non-parametric method
+spect_val = etfe(x, 100, [], 1/8000); % 
 
 figure(1); bode(mo, 'r', spect_val, 'b');
 legend('AR-model', 'Original Signal');
@@ -80,15 +80,15 @@ legend('AR-model', 'Original Signal');
 print(1,'bode1.eps','-depsc','-loose');
 
 %%
-%-----------------------------------------------------------------
-%-----------------------------------------------------------------
-%-----------------------------------------------------------------
-%-----------------------------------------------------------------
+%-------------------------------------------------------
+%-------------------------------------------------------
+%-------------------------------------------------------
+%-------------------------------------------------------
 
 %% Vowel
-%-------------------------------------------------------------------------------
-%----------------------AAA------------------------------------------------------
-%-------------------------------------------------------------------------------
+%-------------------------------------------------------
+%----------------------AAA------------------------------
+%-------------------------------------------------------
 
 
 
@@ -160,8 +160,10 @@ mo9 = ar(edata, 9);
 mo30 = ar(edata, 30);
 mo20 = ar(edata, 20);
 
-figure(3); bode(mo7, 'g', mo8, 'b', mo20, 'm', aa_spect, 'y');
-legend('mo7', 'mo8', 'mo20', 'validation', 'Location', 'SouthWest');
+figure(3); 
+bode(mo7, 'g', mo8, 'b', mo20, 'm', aa_spect, 'y');
+legend('mo7', 'mo8', 'mo20', ...
+'validation', 'Location', 'SouthWest');
 
 print(3,'bodeval_a.eps','-depsc','-loose');
 
@@ -170,7 +172,7 @@ mo7 = ar(aa,7);
 
 
 
-e_vec = filter(mo7.a,1,aa); % m1 <-> AR model of the segmen
+e_vec = filter(mo7.a,1,aa); 
 r = covf(e_vec,100);
 [A,D] = max(r(20:end));
 D = D+20
@@ -257,8 +259,10 @@ mo20 = ar(edata, 20);
 mo28 = ar(edata, 28);
 mo30 = ar(edata, 30);
 
-figure(6); bode(mo7, 'g', mo20, 'b', mo28, 'm', ii_spect, 'y');
-legend('mo7', 'mo20', 'mo28', 'validation', 'Location', 'SouthWest');
+figure(6); 
+bode(mo7, 'g', mo20, 'b', mo28, 'm', ii_spect, 'y');
+legend('mo7', 'mo20', 'mo28', 'validation', ... 
+ 'Location', 'SouthWest');
 
 print(6,'bodeval_i.eps','-depsc','-loose');
 
@@ -268,7 +272,7 @@ mo20 = ar(ii,28);
 
 
 
-e_vec = filter(mo7.a,1,ii); % m1 <-> AR model of the segmen
+e_vec = filter(mo7.a,1,ii); 
 r = covf(e_vec,100);
 [A,D] = max(r(20:end));
 D = D+20
@@ -293,10 +297,10 @@ hold off
 
 
 
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
-%------------------------------------------------------------------------------------------------------
+%----------------------------------------------------------
+%----------------------------------------------------------
+%----------------------------------------------------------
+%----------------------------------------------------------
 
 %% Speech encoding as in GSM
 
@@ -356,19 +360,27 @@ N = length(y);
 %%
 figure(4); 
 subplot(2,1,1)
-plot(0:1/(fs):(N-1)/fs,y);title('Parametric Sentence');xlabel('T');
+plot(0:1/(fs):(N-1)/fs,y);
+title('Parametric Sentence');
+xlabel('T');
 ylabel('Amplitude')
 subplot(2,1,2)
-plot(0:1/fs:(N-1)/fs,sent);title('Non Parametric Sentence');xlabel('T');
+plot(0:1/fs:(N-1)/fs,sent);
+title('Non Parametric Sentence');
+xlabel('T');
 ylabel('Amplitude')
 print(4,'sent_t.eps','-depsc','-loose');
 
 figure(5); 
 subplot(2,1,1);
-plot(-B:2*B/(N-1):B,abs(fft(y)));title('Parametric Sentence');xlabel('Hz');
+plot(-B:2*B/(N-1):B,abs(fft(y)));
+title('Parametric Sentence');
+xlabel('Hz');
 ylabel('Amplitude')
 subplot(2,1,2)
-plot(-B:2*B/(N-1):B,abs(fft(sent)));title('Non Parametric Sentence');xlabel('Hz');
+plot(-B:2*B/(N-1):B,abs(fft(sent)));
+title('Non Parametric Sentence');
+xlabel('Hz');
 ylabel('Amplitude')
 print(5,'sent_f.eps','-depsc','-loose');
 %sound(y,8000)
