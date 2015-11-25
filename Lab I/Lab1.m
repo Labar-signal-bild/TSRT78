@@ -303,7 +303,6 @@ hold off
 
 %% Speech encoding as in GSM
 
-
 [sen, fSamp] = audioread('Sentance5.wav'); % extract data and sampling frequency
 %sound(aaa,fSamp); % make sure that the quality of the recording is okay
 nSamp = size(sen,1); % number of samples
@@ -330,7 +329,15 @@ for i=1:200
 end
 
 %%
-
+    yhat = zeros(200,160);
+    e_vec = filter(sent_ar(i,:),1,sent_div(i,:)); % m1 <-> AR model of the segment
+    r = covf(e_vec',100);
+    figure(7)
+    plot(r);title('Covaraince Function');xlabel('t');
+    print(7,'convf.eps','-depsc','-loose');
+    
+%%
+fs = 8000;
 yhat = zeros(200,160);
 
 for i=1:200
@@ -348,11 +355,22 @@ for i=1:200
     y(160*(i-1)+1:160*(i)) = detrend(yhat(i,:));
 end
 
-y=y./(20*(mean(abs(y))));
+N = length(y);
+%%
+figure(4); 
+subplot(2,1,1)
+plot(0:1/(fs):(N-1)/fs,y);title('Parametric Sentence');xlabel('T');ylabel('Amplitude')
+subplot(2,1,2)
+plot(0:1/fs:(N-1)/fs,sent);title('Non Parametric Sentence');xlabel('T');ylabel('Amplitude')
+print(4,'sent_t.eps','-depsc','-loose');
 
-figure(4); plot(y);
-mean(abs(y))
-sound(y,8000)
+figure(5); 
+subplot(2,1,1);
+plot(-B:2*B/(N-1):B,abs(fft(y)));title('Parametric Sentence');xlabel('Hz');ylabel('Amplitude')
+subplot(2,1,2)
+plot(-B:2*B/(N-1):B,abs(fft(sent)));title('Non Parametric Sentence');xlabel('Hz');ylabel('Amplitude')
+print(5,'sent_f.eps','-depsc','-loose');
+%sound(y,8000)
 %%
 Y = fft(y);
 
